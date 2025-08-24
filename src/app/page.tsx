@@ -12,6 +12,8 @@ const Home = () => {
             <Link href={'/articles/123?lang=en'}>read in english</Link>
             <br />
             <Link href={'/articles/123?lang=fr'}>read in french</Link>
+            <br />
+            <Link href={'/login'}>login</Link>
         </>
     )
 }

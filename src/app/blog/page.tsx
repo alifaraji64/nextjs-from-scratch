@@ -1,7 +1,11 @@
 import React from 'react'
-
-export default function Blog() {
+import ClientButton from './button'
+export default async function Blog() {
+  await new Promise(resolve => setTimeout(resolve, 2000))
   return (
-    <div>Blog</div>
+    <div>
+      <h1>Blog</h1>
+      <ClientButton />
+    </div>
   )
 }
