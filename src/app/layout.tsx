@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import './globals.css'
-export const metadata:Metadata = {
+import { Suspense } from 'react'
+export const metadata: Metadata = {
   title: {
     default: 'Next.js',
     template: '%s - Next.js',
@@ -19,7 +20,8 @@ export default function RootLayout({
         <header className='bg-blue-400 p-4'>
           <p>Header</p>
         </header>
-        {children}
+        <Suspense>{children}</Suspense>
+
         <footer className='bg-gray-300 p-4'>
           <p>footer</p>
         </footer>
