@@ -1,20 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { request } from "http";
-// export function middleware(request: NextRequest) {
-//     if (request.nextUrl.pathname.startsWith('/products/')) {
-//         console.log('About page is visited')
-//         return NextResponse.redirect(new URL('/', request.url));
-//     }
-// }
-// // export const config = {
-// //     matcher: ['/about'],
-// // }
+
 const isProtectedRoute = createRouteMatcher([
-    '/products-db/:path*',])
+    '/products-db/:path*', '/profile/:path*'])
+const isAdminRoute = createRouteMatcher(['/admin/:path*'])
 
 export default clerkMiddleware(async (auth, request) => {
-    if (isProtectedRoute(request)) {await auth.protect() }
+    console.log('role:', ((await auth()).sessionClaims?.metadata as { role?: string })?.role);
+    // {
+    // 	"metadata": "{{user.public_metadata}}"
+    // }
+    //add this object to configuration->session->claims
+    if (isAdminRoute(request) && ((await auth()).sessionClaims?.metadata as { role?: string })?.role !== 'admin') {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (isProtectedRoute(request)) { await auth.protect() }// or use `auth().sessionClaims`
+
 })
 
 export const config = {

@@ -1,7 +1,12 @@
+import { SignedOut } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs/server'
+
 import Link from 'next/link'
 import React from 'react'
-const Home = () => {
-
+const Home = async () => {
+    const user = await currentUser();
+    console.log(user?.id);
+    
     return (
         <>
             <div>Home</div>
@@ -13,7 +18,7 @@ const Home = () => {
             <br />
             <Link href={'/articles/123?lang=fr'}>read in french</Link>
             <br />
-            <Link href={'/login'}>login</Link>
+            <SignedOut><Link href={'/login'}>login</Link></SignedOut>
         </>
     )
 }
