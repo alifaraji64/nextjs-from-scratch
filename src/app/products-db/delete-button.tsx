@@ -2,10 +2,13 @@
 import { removeProduct } from '@/actions/products';
 import React, { useTransition } from 'react'
 
-export default function DeleteButton({ productId }: { productId: number }) {
+export default function DeleteButton({ productId, addOptimisticProduct }: { productId: number, addOptimisticProduct: (id: number) => void }) {
     const [isPending, startTransition] = useTransition();
     return (
         <button className={`${isPending ? 'opacity-50 cursor-not-allowed' : ''} bg-red-700 text-white p-2 rounded cursor-pointer`} disabled={isPending}
-            onClick={() => startTransition(() => { void removeProduct(productId); })}>Delete</button>
+            onClick={() => startTransition(() => {
+                addOptimisticProduct(productId);
+                removeProduct(productId);
+            })}>Delete</button>
     )
 }

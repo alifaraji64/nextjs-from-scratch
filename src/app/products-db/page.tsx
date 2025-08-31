@@ -1,4 +1,4 @@
-type Product = {
+export type Product = {
     id: number;
     title: string;
     price: number;
@@ -8,31 +8,16 @@ type Product = {
 import { getProducts, seedProducts } from '../../prisma-db';
 import Link from 'next/link';
 import DeleteButton from './delete-button';
+import ProductList from './product-list';
 export default async function ProductsDBPage() {
     await seedProducts()
     const products: Product[] = await getProducts();
     return (
         <div>
+            <Link href={'/products-db/create'} className='text-center mx-auto bg-red-400 p-1 text-white mt-10'>Create New Product</Link>
             <ul>
 
-                {products.map(product => (
-                    <div key={product.id} className='border-2 border-black p-4 m-4 rounded-xl flex justify-between'>
-                        <Link href={`/products-db/${product.id}`}>
-                            <li >
-                                <div>
-                                    <h2 className='text-xl font-bold'>Title: {product.title}</h2>
-                                    <p>Price: ${product.price}</p>
-                                    {product.description && <p>Description: {product.description}</p>}
-                                </div>
-                            </li>
-                        </Link>
-                        <div className=' flex items-center font-bold'>
-                            <DeleteButton productId={product.id} />
-                        </div>
-                    </div>
-
-
-                ))}
+                <ProductList products={products} />
             </ul>
         </div>
     )

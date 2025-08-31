@@ -1,6 +1,14 @@
 import { Metadata } from 'next'
 import './globals.css'
 import { Suspense } from 'react'
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 export const metadata: Metadata = {
   title: {
     default: 'Next.js',
@@ -15,17 +23,39 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
-        <header className='bg-blue-400 p-4'>
-          <p>Header</p>
-        </header>
-        <Suspense>{children}</Suspense>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`antialiased`}>
+          <header className="flex justify-end items-center p-4 gap-4 h-16 bg-orange-300">
+            <SignedOut>
+              <SignInButton mode='modal'>
+                <button className='font-medium text-[#6c47ff] bg-white rounded-full text-sm h-10 sm:h-12 px-4 sm:visible sm:px-5 cursor-pointer'>Sign In</button>
+              </SignInButton>
+              <SignUpButton mode='modal'>
+                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+    // <html lang="en">
+    //   <body>
+    //     <header className='bg-blue-400 p-4'>
+    //       <p>Header</p>
+    //     </header>
+    //     <Suspense>{children}</Suspense>
 
-        <footer className='bg-gray-300 p-4'>
-          <p>footer</p>
-        </footer>
-      </body>
-    </html>
+    //     <footer className='bg-gray-300 p-4'>
+    //       <p>footer</p>
+    //     </footer>
+    //   </body>
+    // </html>
   )
 }
