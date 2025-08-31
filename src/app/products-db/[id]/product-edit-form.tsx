@@ -8,7 +8,7 @@ type Product = {
     price: number;
     description?: string | null;
 }
-export default function ProductEditForm({ product }: { product: Product | null }) {
+export default function ProductEditForm({ product }: { product: Product }) {
     const editProductWithId = editProduct.bind(null, product!.id);
     const [state, formAction, isPending] = useActionState(editProductWithId, { errors: {} as Error });
 

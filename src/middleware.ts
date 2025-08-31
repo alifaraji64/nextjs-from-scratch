@@ -4,7 +4,15 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 const isProtectedRoute = createRouteMatcher([
     '/products-db/:path*', '/profile/:path*'])
 const isAdminRoute = createRouteMatcher(['/admin/:path*'])
-
+// export function middleware(request: NextRequest) {
+//     // if (request.nextUrl.pathname.startsWith('/products/')) {
+//     //     console.log('About page is visited')
+//     //     return NextResponse.redirect(new URL('/', request.url));
+//     // }
+// }
+// export const config = {
+//     matcher: ['/about'],
+// }
 export default clerkMiddleware(async (auth, request) => {
     console.log('role:', ((await auth()).sessionClaims?.metadata as { role?: string })?.role);
     // {
