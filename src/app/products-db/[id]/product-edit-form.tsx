@@ -1,10 +1,17 @@
 'use client'
-import { SubmitButton } from "./submit";
-import { useActionState } from "react";
-import { createProduct, Error } from "@/actions/products";
+import { editProduct, Error } from '@/actions/products';
+import React, { useActionState } from 'react'
+import { SubmitButton } from '../create/submit';
+type Product = {
+    id: number;
+    title: string;
+    price: number;
+    description?: string | null;
+}
+export default function ProductEditForm({ product }: { product: Product | null }) {
+    const editProductWithId = editProduct.bind(null, product!.id);
+    const [state, formAction, isPending] = useActionState(editProductWithId, { errors: {} as Error });
 
-export default function AddProductPage() {
-    const [state, formAction, isPending] = useActionState(createProduct, { errors: {} as Error });
     return (
         <form action={formAction} className="p-4 space-y-4 max-w-96">
             <div>
@@ -15,6 +22,7 @@ export default function AddProductPage() {
                         className="block w-full p-2 text-black border rounded"
                         name="title"
                         placeholder="title"
+                        defaultValue={product?.title || ""}
                     />
                 </label>
                 {state.errors.title && (
@@ -29,6 +37,7 @@ export default function AddProductPage() {
                         className="block w-full p-2 text-black border rounded"
                         name="price"
                         placeholder="price"
+                        defaultValue={product?.price || 0}
                     />
                 </label>
                 {state.errors.price && (
@@ -42,6 +51,7 @@ export default function AddProductPage() {
                         className="block w-full p-2 text-black border rounded"
                         name="description"
                         placeholder="description"
+                        defaultValue={product?.description || ""}
                     />
                 </label>
                 {state.errors.description && (
